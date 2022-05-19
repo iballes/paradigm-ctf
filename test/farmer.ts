@@ -25,11 +25,17 @@ before(async () => {
 });
 
 it("solves the challenge", async function () {
-  const attackerFactory = await ethers.getContractFactory(`FarmerAttacker`, eoa);
+  const attackerFactory = await ethers.getContractFactory(`FarmerAttackerIballes`, eoa);
   attacker = await attackerFactory.deploy(setup.address);
 
   tx = await attacker.attack({ value: ethers.utils.parseEther(`5`)})
   await tx.wait()
 
   // PCTF{PR0T3CT_Y0UR_H4RV3ST}
+});
+
+after(async function() {
+  /** SUCCESS CONDITIONS FROM SETUP CONTRACT */
+
+  expect(await setup.isSolved()).to.be.eq(true);
 });

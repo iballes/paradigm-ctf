@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 import "./Farmer.sol";
 
 contract Setup {
-    uint256 expectedBalance;
+    uint256 public expectedBalance; // he cambiado esto a public
 
     CompDaiFarmer public farmer;
     CompFaucet public faucet;
