@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { Contract, Signer } from "ethers";
 import { ethers } from "hardhat";
+import { getContractFactory } from "hardhat/types";
 import { deployOrGetAt, getEoaOrPrivateKey } from "./utils";
 
 let accounts: Signer[];
@@ -34,19 +35,13 @@ before(async () => {
 });
 
 it("solves the challenge", async function () {
-  const reserves = await pair.getReserves()
-  console.log(`reserves`, ethers.utils.formatEther(reserves[0]), ethers.utils.formatEther(reserves[1]))
-
-  // skew the uniswap price such that the ratio is 1:1 and pay back all tokens
-  // eoa starts with 5k ETH, so we don't need a flash swap.
-  // (it would not work with a Uniswap flash swap anyway
-  // because the reserves are not yet updated in the callback)
-
-  const attackerFactory = await ethers.getContractFactory(`BrokerAttacker`, eoa);
-  attacker = await attackerFactory.deploy(setup.address);
-
-  tx = await attacker.attack({ value: ethers.utils.parseEther(`4949`)})
-  await tx.wait()
+  
+  attacker = await (await ethers.getContractFactory('BrokerAttackerIballes', eoa)).deploy(setup.address);
+  await attacker.attack({value: ethers.utils.parseEther('6')});
 
   // PCTF{SP07_0R4CL3S_L0L}
+});
+
+after(async function (){
+  expect(await setup.isSolved()).to.be.equal(true);
 });
