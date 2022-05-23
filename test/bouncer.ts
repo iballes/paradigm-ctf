@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { Contract, Signer } from "ethers";
 import { ethers } from "hardhat";
 import { deployOrGetAt, getEoaOrPrivateKey } from "./utils";
@@ -24,14 +25,15 @@ before(async () => {
 });
 
 it("solves the challenge", async function () {
-  const attackerFactory = await ethers.getContractFactory(`BouncerAttacker`, eoa);
-  attacker = await attackerFactory.deploy(setup.address);
-
-  tx = await attacker.attack({ value: ethers.utils.parseEther(`5`)})
-  await tx.wait()
-
-  tx = await attacker.attack2({ value: ethers.utils.parseEther(`4990`)})
-  await tx.wait()
+  this.attackerContract = await (await (await ethers.getContractFactory('BouncerAttackerIballes', attacker)).deploy(
+    setup.address
+  ));
+  await this.attackerContract.attack({value: ethers.utils.parseEther('2')});
+  await this.attackerContract.attack2({value: ethers.utils.parseEther('98')});
 
   // PCTF{SH0ULDV3_US3D_W37H}
+});
+
+after(async function (){
+  expect(await setup.isSolved()).to.be.equal(true);
 });
