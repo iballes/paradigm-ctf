@@ -43,12 +43,10 @@ contract Wallet {
     }
 
     function addOperator(address operator) public onlyOwner {
-        // not using operator?
         _operators[owner] = true;
     }
 
     function removeOperator(address operator) public onlyOwner {
-        // not using operator?
         _operators[owner] = false;
     }
 
