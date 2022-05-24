@@ -28,11 +28,16 @@ before(async () => {
 });
 
 it("solves the challenge", async function () {
-  const attackerFactory = await ethers.getContractFactory(`YieldAggregatorAttacker`, eoa);
-  attacker = await attackerFactory.deploy(setup.address);
+  // attacker 4500eth
 
-  tx = await attacker.attack({ value: ethers.utils.parseEther(`4500`)})
-  await tx.wait()
+  this.attackerContract = await (await ethers.getContractFactory("YieldAggregatorAttackerIballes", attacker)).deploy(
+    setup.address, {value: ethers.utils.parseEther('4500')}
+  );
+  await this.attackerContract.attack();
 
   // PCTF{PR0T3CT_Y0UR_H4RV3ST}
+});
+
+after(async function (){
+  expect(await setup.isSolved()).to.be.equal(true);
 });

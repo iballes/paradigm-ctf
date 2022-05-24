@@ -57,14 +57,7 @@ passes ensureTokenOwner check because (tokenId+2) + 1 = tokenId's metadata
 */
 
 it("solves the challenge", async function () {
-  const attackerFactory = await ethers.getContractFactory(
-    `MarketAttacker`,
-    eoa
-  );
-  attacker = await attackerFactory.deploy(setup.address);
-
-  tx = await attacker.attack({ value: ethers.utils.parseEther(`4000`) });
-  await tx.wait();
+ // attacker 4000eth
 
   // PCTF{CRyPt0_Nam3_53rv1c3}
 });

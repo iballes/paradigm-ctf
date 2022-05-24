@@ -28,15 +28,7 @@ before(async () => {
 });
 
 it("solves the challenge", async function () {
-  // eoa starts with 5k ethereum on CTF network
-  console.log(`EOA starts with`, ethers.utils.formatEther(await eoa.getBalance()))
-
-  // skew the uniswap price such that the ratio is 1:1 and pay back all tokens
-  const attackerFactory = await ethers.getContractFactory(`SecureAttacker`, eoa);
-  attacker = await attackerFactory.deploy(setup.address);
-
-  tx = await attacker.attack({ value: ethers.utils.parseEther(`50`)})
-  await tx.wait()
+  // attacker: 50eth
 
   // PCTF{7h1nk1ng_0U751dE_7he_80X}
 });
